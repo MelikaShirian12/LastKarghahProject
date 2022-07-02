@@ -351,13 +351,21 @@ public class UserManager {
         return found;
     }
 
-    public static void acceptReq(UserAccount user) {
+    public static void acceptReq(String userID) {
 
-        String sqlCom = String.format("INSERT INTO followers (user id, follower id) VALUES ('%s', '%s') ", userLoggedIn.getID(), user.getID());
-        MySQLConnection.mySQLConnection.ExecuteSQL(sqlCom);
+        for (UserAccount allUser : allUsers) {
+            if (allUser.getID().equals(userID)){
 
-        userLoggedIn.setFollowers(user);
-        user.setFollowing(userLoggedIn);
+                String sqlCom = String.format("INSERT INTO followers (user id, follower id) VALUES ('%s', '%s') ", userLoggedIn.getID(), userID);
+                MySQLConnection.mySQLConnection.ExecuteSQL(sqlCom);
+
+                userLoggedIn.setFollowers(allUser);
+                allUser.setFollowing(userLoggedIn);
+
+                break;
+            }
+        }
+
     }
 
     //====================================================melika===========================
