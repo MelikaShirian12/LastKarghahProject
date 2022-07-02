@@ -16,6 +16,16 @@ public class Comment {
         replies = new ArrayList<>();
     }
 
+    @Override
+    public String toString() {
+        return "Comment{" +
+                "text='" + text + '\'' +
+                ", user=" + user +
+                ", delete=" + delete +
+                ", replies=" + replies +
+                '}';
+    }
+
     // Getters and Setters ================================================
 
 

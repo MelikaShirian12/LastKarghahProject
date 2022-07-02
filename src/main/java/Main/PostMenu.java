@@ -7,7 +7,10 @@ public class PostMenu {
     static Scanner sc = new Scanner(System.in);
 
     public static void menu() {
-        while (true) {
+
+        boolean exit = true;
+
+        while (exit) {
             System.out.println("--- Post Menu ---");
             System.out.println("[1] Comment");
             System.out.println("[2] like");
@@ -40,7 +43,7 @@ public class PostMenu {
                     break;
 
                 case 6:
-                    System.exit(0);
+                    exit = false;
                     break;
 
                 default:

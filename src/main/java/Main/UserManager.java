@@ -1,6 +1,8 @@
 package Main;
 
 import Exceptions.DuplicateID;
+import Exceptions.WrongIDException;
+import Exceptions.WrongPasswordException;
 import Exceptions.wrongPostID;
 
 import java.util.ArrayList;
@@ -14,24 +16,24 @@ public class UserManager {
     public static UserAccount userLoggedIn;
 
     // zahra -----------------------------------------------------------------------
-    public static boolean login(String ID, String password) {
-        for (UserAccount user : allUsers)
+    public static void login(String ID, String password)
+            throws WrongPasswordException, WrongIDException {
+
+        boolean foundID = false;
+        for (UserAccount user : allUsers) {
             if (user.getID().equals(ID)) {
 
                 if (user.getPassword().equals(password)) {
-
                     userLoggedIn = user;
-                    return true;
-
-                } else {
-                    //todo wrong password exception
+                    foundID = true;
                 }
 
-            } else {
-                //todo wrong ID exception
+                else throw new WrongPasswordException();
             }
+        }
 
-        return false;
+        if (!foundID)
+            throw new WrongIDException();
     }
 
     //-----------------------------------------------------------------------------
@@ -180,9 +182,15 @@ public class UserManager {
     }
 
     //-----------------------------------------------------------------------------
-    public boolean replyComment(int postId, String userId, String firstText, String newText) throws wrongPostID {
-        // todo
-        // if comment doesnt exist
+    public static boolean replyComment(String userId, int postId, String comment, String replyText) {
+        for (UserAccount user : allUsers)
+            if (user.getID().equals(userId))
+                for (Post p : user.getPosts())
+                    if (p.getPost_id() == postId) for (Comment c : p.getComments())
+                        if (c.getText().equals(comment)) {
+                            c.setReplies(new Comment(replyText, userLoggedIn));
+                            return true;
+                        }
         return false;
     }
 
@@ -343,13 +351,21 @@ public class UserManager {
         return found;
     }
 
-    public static void acceptReq(UserAccount user) {
+    public static void acceptReq(String userID) {
 
-        String sqlCom = String.format("INSERT INTO followers (user id, follower id) VALUES ('%s', '%s') ", userLoggedIn.getID(), user.getID());
-        MySQLConnection.mySQLConnection.ExecuteSQL(sqlCom);
+        for (UserAccount allUser : allUsers) {
+            if (allUser.getID().equals(userID)){
 
-        userLoggedIn.setFollowers(user);
-        user.setFollowing(userLoggedIn);
+                String sqlCom = String.format("INSERT INTO followers (user id, follower id) VALUES ('%s', '%s') ", userLoggedIn.getID(), userID);
+                MySQLConnection.mySQLConnection.ExecuteSQL(sqlCom);
+
+                userLoggedIn.setFollowers(allUser);
+                allUser.setFollowing(userLoggedIn);
+
+                break;
+            }
+        }
+
     }
 
     //====================================================melika===========================
@@ -494,14 +510,14 @@ public class UserManager {
         userLoggedIn.setPosts(new_post);
         print("added successfully !");
 
-        print("post id: "+new_post.getPost_id());
+        print("post id: " + new_post.getPost_id());
     }
 
     public static void editPost(String Text, int id) throws wrongPostID {
         //we take the string from the graphic
 
         Post post = findPost(id);
-        if (post==null)
+        if (post == null)
             return;
 
         post.setText(Text);
@@ -517,7 +533,6 @@ public class UserManager {
         for (Like like : post.getLikes())
             like.getUser().setNotifications(LikeNotif);
 
-        print("edited successfully !");
     }
 
     public static void deletePost(int id) throws wrongPostID {
@@ -557,7 +572,7 @@ public class UserManager {
 
     public static void unfollowings() {
         print("people you unfollowed recently: ");
-        if (userLoggedIn.getUnfollowers().size() == 0) {
+        if (userLoggedIn.getUnfollowed_you().size() == 0) {
             print("nobody ");
             return;
         }

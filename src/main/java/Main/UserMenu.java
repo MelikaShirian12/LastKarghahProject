@@ -10,7 +10,10 @@ public class UserMenu {
     static Scanner sc = new Scanner(System.in);
 
     public static void menu() {
-        while (true) {
+
+        boolean exit = true;
+
+        while (exit) {
             System.out.println("--- User Menu ---");
             System.out.println("[1] Add Request");
             System.out.println("[2] Edit Info");
@@ -23,8 +26,8 @@ public class UserMenu {
             System.out.println("[9] Follow Nakonandegan");
             System.out.println("[10] Tarafdarha");
             System.out.println("[11] Follow backs");
-            System.out.println("[12] Recently Unfollowed");
-            System.out.println("[13] lost followers");
+            System.out.println("[12] Recently Unfollowers");
+            System.out.println("[13] Your Recently Unfollows");
             System.out.println("[14] Sort Posts (by likes)");
             System.out.println("[15] Sort Posts (by comments)");
             System.out.println("[16] The Most Hated Post");
@@ -36,6 +39,10 @@ public class UserMenu {
             System.out.println("[22] Unfollowers"); // 16
             System.out.println("[23] Your Requests");
             System.out.println("[24] Explore");
+            System.out.println("[25] Post Menu");
+            System.out.println("[26] Follow");
+            System.out.println("[27] Unfollow");
+            System.out.println("[28] EXIT");
 
             int n = sc.nextInt();
 
@@ -83,13 +90,18 @@ public class UserMenu {
                     break;
 
                 case 6:
-
+                    System.out.println("Reply Comment");
+                    System.out.println("Enter user id, post id, the comment you want to reply and reply text");
+                    if (UserManager.replyComment(sc.next(), sc.nextInt(), sc.next(), sc.next()))
+                        System.out.println("ok");
+                    else
+                        System.out.println("WRONG INFORMATION");
                     break;
 
                 case 7:
                     try {
                         System.out.println("Enter your post id, user id and comment text");
-                        int postId= sc.nextInt();
+                        int postId = sc.nextInt();
                         sc.next();
                         String userid = sc.next();
                         String text = sc.nextLine();
@@ -106,78 +118,113 @@ public class UserMenu {
 
                 case 8:
                     System.out.println("Your Saved Posts");
-                    for (Post p: UserManager.userLoggedIn.getSavedPost())
+                    for (Post p : UserManager.userLoggedIn.getSavedPost())
                         System.out.println(p);
                     break;
 
                 case 9:
                     System.out.println("people you followed but they didnt follow you:");
-                    for (UserAccount u: UserManager.didntFollow())
+                    for (UserAccount u : UserManager.didntFollow())
                         System.out.println(u);
                     break;
 
                 case 10:
                     System.out.println("Your tarafdars:");
-                    for (UserAccount u: UserManager.tarafdarHa())
+                    for (UserAccount u : UserManager.tarafdarHa())
                         System.out.println(u);
                     break;
 
                 case 11:
                     System.out.println("both followed each other:");
-                    for (UserAccount u: UserManager.followBack())
+                    for (UserAccount u : UserManager.followBack())
                         System.out.println(u);
                     break;
 
                 case 12:
-                    UserManager.unfollowings();
+                    System.out.println("Recently unfollows: ");
+
                     break;
 
                 case 13:
-                    UserManager.lostFollowers();
+
                     break;
 
                 case 14:
-
+                    System.out.println("Sort Posts (by likes)");
+                    UserManager.postOrganizing(UserManager.userLoggedIn);
                     break;
 
                 case 15:
-
+                    // todo
+                    System.out.println("Sort Posts (by comments)");
+                    UserManager.postOrganizing(UserManager.userLoggedIn);
                     break;
 
                 case 16:
-
+                    System.out.println("The Most Hated Post:");
+                    PostManager.unpopularPosts();
                     break;
 
                 case 17:
-
+                    System.out.println("The Most Popular Post:");
+                    // ???
                     break;
 
                 case 18:
-
+                    System.out.println("Follower With The Most Like:");
+                    System.out.println(UserManager.theMostLikes());
                     break;
 
                 case 19:
-
+                    System.out.println("Follower With The Most Comments:");
+                    System.out.println(UserManager.theMostComments());
                     break;
 
                 case 20:
-
+                    System.out.println("Followers With No Likes");
+                    for (UserAccount u : UserManager.userNotLiked())
+                        System.out.println(u);
                     break;
 
                 case 21:
-
+                    System.out.println("Followers With No Comments");
+                    for (UserAccount u : UserManager.userNotCommented())
+                        System.out.println(u);
                     break;
 
                 case 22:
-
+                    for (UserAccount user : UserManager.userLoggedIn.getUnfollowers())
+                        System.out.println(user.getID());
                     break;
 
                 case 23:
-
+                    System.out.println("Requests:");
+                    for (UserAccount request : UserManager.userLoggedIn.getRequests())
+                        System.out.println(request);
+                    // todo : accept or remove
                     break;
 
                 case 24:
                     PostManager.explore();
+                    break;
+
+                case 25:
+                    PostMenu.menu();
+                    break;
+
+                case 26:
+                    System.out.println("Enter id");
+                    UserManager.follow(sc.next());
+                    break;
+
+                case 27:
+                    System.out.println("Enter id");
+                    if(UserManager.unfollow(sc.next()))
+                    System.out.println("unfollowed successfully");
+                    break;
+
+                case 28:
+                    exit = false;
                     break;
 
                 default:
