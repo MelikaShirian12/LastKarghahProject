@@ -9,14 +9,6 @@ public class Like {
         this.isLike = isLike;
     }
 
-    @Override
-    public String toString() {
-        return "Like{" +
-                "user=" + user +
-                ", isLike=" + isLike +
-                '}';
-    }
-
     // Getters and Setters ================================================
 
     public UserAccount getUser() {

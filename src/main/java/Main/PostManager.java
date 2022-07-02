@@ -12,12 +12,12 @@ public class PostManager {
 
         double aveDislikeNum = 0;
 
-        for (Post allPost : UserManager.userLoggedIn.getPosts()){
+        for (Post allPost : allPosts){
             aveDislikeNum += allPost.getDislikeNumber();
         }
-        aveDislikeNum /= UserManager.userLoggedIn.getPosts().size();
+        aveDislikeNum /= allPosts.size();
 
-        for (Post allPost : UserManager.userLoggedIn.getPosts()){
+        for (Post allPost : allPosts){
             if (allPost.getDislikeNumber() > aveDislikeNum)
                 System.out.println(allPost);
         }

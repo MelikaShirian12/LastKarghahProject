@@ -1,8 +1,5 @@
 package Main;
 
-import Exceptions.WrongIDException;
-import Exceptions.WrongPasswordException;
-
 import java.util.Scanner;
 
 public class MainMenu {
@@ -44,13 +41,18 @@ public class MainMenu {
     }
 
     private static void login() {
-        try {
-            System.out.println("Enter id and password:");
-            UserManager.login(sc.next(), sc.next());
-            UserMenu.menu();
-        } catch (WrongPasswordException | WrongIDException e) {
-            System.out.println(e.getMessage());
-        }
+        System.out.println("Enter id and password:");
+        Scanner scc=new Scanner(System.in);
+        String id=scc.nextLine();
+        String pass=scc.nextLine();
+
+        for (UserAccount u : UserManager.allUsers)
+            if (u.getID().equals(id) && u.getPassword().equals(pass)) {
+                UserManager.userLoggedIn=u;
+                UserMenu.menu();
+                return;
+            }
+        System.out.println("Wrong id or password"); // todo exception
     }
 
     private static void register() {

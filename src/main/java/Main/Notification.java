@@ -15,15 +15,6 @@ public class Notification {
         MySQLConnection.mySQLConnection.ExecuteSQL(sqlCom);
     }
 
-    @Override
-    public String toString() {
-        return "Notification{" +
-                "user=" + user +
-                ", post=" + post +
-                ", notifText='" + notifText + '\'' +
-                '}';
-    }
-
     // Getters and Setters ================================================
 
 
