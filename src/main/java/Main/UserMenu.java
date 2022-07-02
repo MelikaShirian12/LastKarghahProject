@@ -40,9 +40,7 @@ public class UserMenu {
             System.out.println("[23] Your Requests");
             System.out.println("[24] Explore");
             System.out.println("[25] Post Menu");
-            System.out.println("[26] Follow");
-            System.out.println("[27] Unfollow");
-            System.out.println("[28] EXIT");
+            System.out.println("[26] EXIT");
 
             int n = sc.nextInt();
 
@@ -193,8 +191,7 @@ public class UserMenu {
                     break;
 
                 case 22:
-                    for (UserAccount user : UserManager.userLoggedIn.getUnfollowers())
-                        System.out.println(user.getID());
+
                     break;
 
                 case 23:
@@ -213,17 +210,6 @@ public class UserMenu {
                     break;
 
                 case 26:
-                    System.out.println("Enter id");
-                    UserManager.follow(sc.next());
-                    break;
-
-                case 27:
-                    System.out.println("Enter id");
-                    if(UserManager.unfollow(sc.next()))
-                    System.out.println("unfollowed successfully");
-                    break;
-
-                case 28:
                     exit = false;
                     break;
 
