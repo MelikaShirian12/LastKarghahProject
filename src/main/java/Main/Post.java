@@ -21,23 +21,10 @@ public class Post implements Comparable{
         this.user_Post=user_Post;
         this.post_id= ++postIDMaker;
         likes = new ArrayList<>();
-        comments = new ArrayList<>();
+        comments=new ArrayList<>();
 
         String sqlCom = String.format("INSERT INTO post (text, like num, dislike num, post id, user id) VALUES ('%s', '%s', '%s', '%s', '%s') ", this.text, this.likeNumber, this.dislikeNumber, this.post_id, this.user_Post.getID());
         MySQLConnection.mySQLConnection.ExecuteSQL(sqlCom);
-    }
-
-    @Override
-    public String toString() {
-        return "Post{" +
-                "post_id=" + post_id +
-                ", text='" + text + '\'' +
-                ", likes=" + likes +
-                ", likeNumber=" + likeNumber +
-                ", dislikeNumber=" + dislikeNumber +
-                ", comments=" + comments +
-                ", user_Post=" + user_Post +
-                '}';
     }
 
     //comparing
@@ -58,6 +45,18 @@ public class Post implements Comparable{
         }
     }
 
+    @Override
+    public String toString() {
+        return "Post{" +
+                "post_id=" + post_id +
+                ", text='" + text + '\'' +
+                ", likes=" + likes +
+                ", likeNumber=" + likeNumber +
+                ", dislikeNumber=" + dislikeNumber +
+                ", comments=" + comments +
+                ", user_Post=" + user_Post +
+                '}';
+    }
 
     // Getters and Setters ================================================
 
